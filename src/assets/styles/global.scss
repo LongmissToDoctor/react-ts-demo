@@ -1,0 +1,22 @@
+$color: #eee;
+body {
+  background: $color;
+  // 文字禁用
+  user-select: none;
+}
+
+img {
+  // 禁止拖动图片
+  -webkit-user-drag: none;
+}
+
+.ant-layout-sider .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ant-layout-content .site-layout-background {
+  background: #fff;
+  border-radius: 5px;
+}
