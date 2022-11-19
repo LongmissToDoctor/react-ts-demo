@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Menu } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 type MenuItem = Required<MenuProps>['items'][number];
 import {
@@ -11,35 +11,35 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
-
 const items: MenuItem[] = [
-  getItem('Option 1', 'page1', <PieChartOutlined />),
-  getItem('Option 2', 'page2', <DesktopOutlined />),
-  getItem('User', 'page3', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'page4', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
+  { label: '栏目一', key: '/page1', icon: <PieChartOutlined /> },
+  { label: '栏目二', key: '/page2', icon: <DesktopOutlined /> },
+  {
+    label: '栏目三',
+    key: '/page3',
+    icon: <UserOutlined />,
+    children: [
+      { label: '栏目301', key: '/page3/page301' },
+      { label: '栏目302', key: '/page3/page302' },
+      { label: '栏目303', key: '/page3/page303' },
+    ],
+  },
+  {
+    label: '栏目四',
+    key: '/page4',
+    icon: <TeamOutlined />,
+    children: [
+      { label: '栏目401', key: '/page4/page401' },
+      { label: '栏目402', key: '/page4/page402' },
+    ],
+  },
+  { label: '栏目五', key: '/page5', icon: <FileOutlined /> },
 ];
 
 export default function MainMenu() {
   const navigate = useNavigate();
-  const [openKeys, setOpenKeys] = useState(['']);
+  const curLocation = useLocation();
+  const [openKeys, setOpenKeys] = useState(() => [`/${curLocation.pathname.split('/')[1] || ''}`]);
 
   const menuClick = (e: { key: string }) => {
     navigate(e.key);
@@ -52,7 +52,7 @@ export default function MainMenu() {
   return (
     <Menu
       theme='dark'
-      defaultSelectedKeys={['1']}
+      defaultSelectedKeys={[curLocation.pathname]}
       mode='inline'
       items={items}
       onClick={menuClick}
